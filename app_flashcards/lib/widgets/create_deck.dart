@@ -2,7 +2,6 @@ import 'package:go_router/go_router.dart';
 import 'package:flutter/material.dart';
 import 'package:app_flashcards/model/dao_deck.dart';
 import 'package:app_flashcards/database/db_helper.dart';
-import 'package:app_flashcards/model/deck.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
 

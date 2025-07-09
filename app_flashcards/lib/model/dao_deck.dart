@@ -1,6 +1,5 @@
 import 'package:sqflite/sqflite.dart';
 import 'deck.dart';
-import '../database/db_helper.dart';
 
 class DeckDao {
   static const String tableName = 'deck';

@@ -2,7 +2,6 @@ import 'package:app_flashcards/widgets/bottom_navigation.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import '../widgets/create_deck.dart';
 
 class SettingsPage extends StatefulWidget {
   final int? deckId;
