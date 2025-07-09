@@ -1,11 +1,12 @@
+import 'package:app_flashcards/widgets/bottom_navigation.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-import '../widgets/bottom_navigation_bar.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import '../widgets/create_deck.dart';
 
 class SettingsPage extends StatefulWidget {
-  const SettingsPage({super.key});
+  final int? deckId;
+  const SettingsPage({super.key, this.deckId});
 
   @override
   State<SettingsPage> createState() => _SettingsPageState();
@@ -16,7 +17,7 @@ class _SettingsPageState extends State<SettingsPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Settings'),
+        backgroundColor: const Color.fromARGB(255, 124, 48, 114),
         automaticallyImplyLeading: true,
       ),
       body: Center(
@@ -52,13 +53,15 @@ class _SettingsPageState extends State<SettingsPage> {
           ],
         ),
       ),
-      bottomNavigationBar: CustomBottomNavigationBar(
+      bottomNavigationBar: CustomBottomNavigation(
         currentIndex: 2,
         onTap: (idx) {
           if (idx == 0) {
             context.go('/home');
+          } else if (idx == 1 && widget.deckId != null) {
+            context.go('/deck/${widget.deckId}');
           } else if (idx == 1) {
-            showCreateDeckDialog(context);
+            context.go('/deck/${-1}');
           }
         },
       ),

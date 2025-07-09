@@ -1,3 +1,4 @@
+import 'package:app_flashcards/screens/tela_deck.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart'; // funções do Firebase
 import 'firebase_options.dart'; // configurações do Firebase - criado no "$ flutterfire configure"
@@ -6,7 +7,6 @@ import 'package:go_router/go_router.dart';
 // TELAS
 import 'screens/tela_login.dart';
 import 'screens/tela_home.dart';
-import 'widgets/create_deck.dart';
 import 'screens/tela_settings.dart';
 import 'screens/tela_register.dart';
 import 'screens/tela_forgot_password.dart';
@@ -36,8 +36,22 @@ final GoRouter _router = GoRouter(
       },
     ),
     GoRoute(
+      path: '/deck/:id', //rota com parâmetro
+      builder: (context, state) {
+        final deckId = int.parse(state.pathParameters['id']!);
+        return TelaDeck(deckId: deckId);
+      },
+    ),
+    GoRoute(
       path: '/settings',
-      builder: (context, state) => const SettingsPage(),
+      builder: (context, state) => const SettingsPage()
+    ),
+    GoRoute(
+      path: '/settings/:id',
+      builder: (context, state) {
+        final deckId = int.parse(state.pathParameters['id']!);
+        return SettingsPage(deckId: deckId);
+      },
     ),
     GoRoute(
       path: '/cadastro',

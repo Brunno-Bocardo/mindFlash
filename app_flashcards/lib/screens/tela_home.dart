@@ -26,7 +26,6 @@ class _TelaPrincipalState extends State<TelaPrincipal> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('LOGO AQUI'),
         backgroundColor: const Color.fromARGB(255, 124, 48, 114),
       ),
       body: FutureBuilder<List<Deck>>(

@@ -35,7 +35,7 @@ dependencies:
   go_router: ^13.0.1
 
   # firebase
-  firebase_core: ^2.24.0
+  firebase_core: ^2.32.0
   firebase_auth: ^4.16.0
 
   # banco de dados
