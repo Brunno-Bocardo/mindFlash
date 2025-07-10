@@ -5,6 +5,7 @@ import 'package:app_flashcards/model/dao_deck.dart';
 import 'package:app_flashcards/model/deck.dart';
 import 'package:app_flashcards/widgets/bottom_navigation.dart';
 import 'package:app_flashcards/widgets/create_card.dart';
+import 'package:app_flashcards/widgets/update_card.dart';
 import 'package:app_flashcards/widgets/update_deck.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
@@ -116,8 +117,7 @@ class _TelaDeckState extends State<TelaDeck> {
                             borderRadius: BorderRadius.circular(8.0)
                           ),
                           child: ListTile(
-                            // Editar o card tocado
-                            // onTap: () {}
+                            onTap: () => showUpdateCardDialog(context, card),
                             title: Text(
                               card.question,
                               style: const TextStyle(color: Colors.white),
