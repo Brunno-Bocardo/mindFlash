@@ -47,13 +47,6 @@ final GoRouter _router = GoRouter(
       builder: (context, state) => const SettingsPage()
     ),
     GoRoute(
-      path: '/settings/:id',
-      builder: (context, state) {
-        final deckId = int.parse(state.pathParameters['id']!);
-        return SettingsPage(deckId: deckId);
-      },
-    ),
-    GoRoute(
       path: '/cadastro',
       builder: (context, state) => const TelaCadastro(),
     ),
