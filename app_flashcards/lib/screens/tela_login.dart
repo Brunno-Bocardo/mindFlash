@@ -23,7 +23,10 @@ class _LoginPageState extends State<LoginPage> {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            const Text('LOGO AQUI', style: TextStyle(fontSize: 24)),
+            Image.asset(
+              'img/logo.png',
+              height: 200,
+            ),
             const SizedBox(height: 40),
             TextField(
               controller: _emailController,
