@@ -134,7 +134,9 @@ class _TelaDeckState extends State<TelaDeck> {
                       icon: const Icon(Icons.play_arrow),
                       label: const Text('Play'),
                       onPressed: () {
-                        // Abrir tela para dar play no deck
+                        // Ir para tela de play do deck
+                        final deckId = widget.deckId;
+                        context.go('/deck/play/$deckId');
                       }
                     ),
                     ElevatedButton.icon(

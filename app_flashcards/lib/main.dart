@@ -1,4 +1,5 @@
 import 'package:app_flashcards/screens/tela_deck.dart';
+import 'package:app_flashcards/screens/tela_play_deck.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart'; // funções do Firebase
 import 'firebase_options.dart'; // configurações do Firebase - criado no "$ flutterfire configure"
@@ -40,6 +41,13 @@ final GoRouter _router = GoRouter(
       builder: (context, state) {
         final deckId = int.parse(state.pathParameters['id']!);
         return TelaDeck(deckId: deckId);
+      },
+    ),
+    GoRoute(
+      path: '/deck/play/:id',
+      builder: (context, state) {
+        final deckId = int.parse(state.pathParameters['id']!);
+        return TelaDeckPlay(deckId: deckId);
       },
     ),
     GoRoute(
