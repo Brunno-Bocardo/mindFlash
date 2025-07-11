@@ -163,15 +163,20 @@ class _TelaDeckPlayState extends State<TelaDeckPlay> {
                 ],
               )
             ),
-          FloatingActionButton(
-            onPressed: () {
-              final deckId = widget.deckId;
-              context.go('/deck/$deckId');
-            },
-            child: const Icon(Icons.arrow_back),
-          ),
+          
         ],
       ),
+
+      floatingActionButton: FloatingActionButton(
+        onPressed: () {
+          final deckId = widget.deckId;
+          context.go('/deck/$deckId');
+        },
+        backgroundColor: const Color.fromARGB(255, 126, 49, 115),
+        foregroundColor: Colors.white,
+        child: const Icon(Icons.arrow_back),
+      ),
+
     );    
   }
 }

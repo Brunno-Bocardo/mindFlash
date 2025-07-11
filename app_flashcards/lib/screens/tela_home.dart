@@ -76,6 +76,7 @@ class _TelaPrincipalState extends State<TelaPrincipal> {
           showCreateDeckDialog(context);
         },
         backgroundColor: const Color.fromARGB(255, 126, 49, 115),
+        foregroundColor: Colors.white,
         child: const Icon(Icons.add),
       ),
 
