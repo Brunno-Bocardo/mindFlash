@@ -26,49 +26,60 @@ void showUpdateCardDialog(BuildContext context, Flashcard card) {
       ),
       actions: [
         TextButton(
-          onPressed: () => Navigator.of(dialogContext).pop(),
-          child: const Text('Cancelar'),
-        ),
-        ElevatedButton(
-          onPressed: () async {
-            final newQuestion = questionController.text.trim();
-            final newAnswer = answerController.text.trim();
-            if (newQuestion.isEmpty || newAnswer.isEmpty) {
-              ScaffoldMessenger.of(context).showSnackBar(
-                const SnackBar(content: Text('Preencha todos os campos.')),
-              );
-              return;
-            }
-            final updatedCard = Flashcard(
-              id: card.id,
-              deckId: card.deckId,
-              question: newQuestion,
-              answer: newAnswer,
-              consecutiveHits: card.consecutiveHits,
-              hidden: card.hidden,
-            );
-            final db = await DBHelper.getInstance();
-            await CardDao.updateCard(db, updatedCard);
-            Navigator.of(dialogContext).pop();
-            ScaffoldMessenger.of(context).showSnackBar(
-              const SnackBar(content: Text('Card atualizado!')),
-            );
-          },
-          child: const Text('Salvar'),
-        ),
-        ElevatedButton(
-          style: ElevatedButton.styleFrom(backgroundColor: const Color.fromARGB(255, 208, 90, 81)),
-          onPressed: () async {
-            final db = await DBHelper.getInstance();
-            await CardDao.deleteCard(db, card.id!);
-            Navigator.of(dialogContext).pop();
-            ScaffoldMessenger.of(context).showSnackBar(
-              const SnackBar(content: Text('Card excluído!')),
-            );
-          },
+          style: TextButton.styleFrom(
+            foregroundColor: const Color.fromARGB(255, 208, 90, 81)
+          ),
+          onPressed: () async { _deleteCard(card, context); },
           child: const Text('Excluir'),
+        ),
+        TextButton(
+          child: const Text('Cancelar'),
+          onPressed: () => Navigator.of(dialogContext).pop(),
+        ),
+        ElevatedButton(
+          child: const Text('Salvar'),
+          onPressed: () async {
+            final question = questionController.text.trim();
+            final answer = answerController.text.trim();
+            _updateCard(question, answer, card, context);
+          },
         ),
       ],
     ),
+  );
+}
+
+void _updateCard(String question, String answer, Flashcard oldCard, BuildContext context) {
+  try {
+    if (question.isEmpty || answer.isEmpty) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('Preencha todos os campos.')),
+      );
+      return;
+    }
+    final updatedCard = Flashcard(id: oldCard.id, deckId: oldCard.deckId, question: question, answer: answer, consecutiveHits: oldCard.consecutiveHits, hidden: oldCard.hidden, );
+
+    DBHelper.getInstance().then((db) {
+      CardDao.updateCard(db, updatedCard);
+    });
+    Navigator.of(context).pop();
+    ScaffoldMessenger.of(context).showSnackBar(
+      const SnackBar(content: Text('Card atualizado!')),
+    );
+  } 
+  
+  catch (e) {
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(content: Text('Erro ao atualizar card: $e')),
+    );
+  }
+}
+
+void _deleteCard(Flashcard card, BuildContext context) async {
+  final db = await DBHelper.getInstance();
+  await CardDao.deleteCard(db, card.id!);
+  Navigator.of(context).pop();
+  ScaffoldMessenger.of(context).showSnackBar(
+    const SnackBar(content: Text('Card excluído!')),
   );
 }

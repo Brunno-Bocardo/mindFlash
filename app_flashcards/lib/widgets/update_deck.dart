@@ -3,6 +3,7 @@ import 'package:app_flashcards/model/dao_deck.dart';
 import 'package:app_flashcards/model/deck.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 
 void showUpdateDeckDialog(BuildContext context, Deck? deck) {
   final nameController = TextEditingController();
@@ -32,6 +33,18 @@ void showUpdateDeckDialog(BuildContext context, Deck? deck) {
       ),
       actions: [
         TextButton(
+          style: TextButton.styleFrom(
+            foregroundColor: const Color.fromARGB(255, 208, 90, 81)
+          ),
+          onPressed: () async { 
+            if(deck != null) {
+              _deleteDeck(deck, context);
+              context.go('/home');
+            }
+          },
+          child: const Text('Excluir')
+        ),
+        TextButton(
           onPressed: () => Navigator.of(dialogContext).pop(), 
           child: const Text('Cancelar')
         ),
@@ -40,19 +53,19 @@ void showUpdateDeckDialog(BuildContext context, Deck? deck) {
             final name = nameController.text.trim();
             final desc = descController.text.trim();
             if(deck != null){
-              updateDeck(name, desc, deck, context);
+              _updateDeck(name, desc, deck, context);
             }
             //Modificar para dar refresh depois
             Navigator.of(dialogContext).pop();
           }, 
           child: const Text('Salvar')
-          ),
+        ),
       ],
     )
   );
 }
 
-void updateDeck(String name, String desc, Deck? oldDeck, BuildContext context) {
+void _updateDeck(String name, String desc, Deck? oldDeck, BuildContext context) {
 
   try {
 
@@ -87,4 +100,12 @@ void updateDeck(String name, String desc, Deck? oldDeck, BuildContext context) {
       SnackBar(content: Text('Erro: $e')),
     );
   }
+}
+
+void _deleteDeck(Deck deck, BuildContext context) async {
+  final db = await DBHelper.getInstance();
+  await DeckDao.deleteDeck(db, deck.id!);
+  ScaffoldMessenger.of(context).showSnackBar(
+    const SnackBar(content: Text('Deck excluído!')),
+  );
 }

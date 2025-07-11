@@ -117,6 +117,7 @@ class _TelaDeckState extends State<TelaDeck> {
                             borderRadius: BorderRadius.circular(8.0)
                           ),
                           child: ListTile(
+                            // abrir popup pra editar ou excluir o card
                             onTap: () => showUpdateCardDialog(context, card),
                             title: Text(
                               card.question,
