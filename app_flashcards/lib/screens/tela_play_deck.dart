@@ -151,6 +151,7 @@ class _TelaDeckPlayState extends State<TelaDeckPlay> {
                     label: const Text('Right'),
                   ),
                   ElevatedButton.icon(
+                    icon: const Icon(Icons.close),
                     onPressed: () {
                       setState(() {
                         currentCard.consecutiveHits = 0;
