@@ -19,9 +19,11 @@ class CustomBottomNavigationBar extends StatelessWidget {
       onTap: (idx) {
           onTap(idx);
       },
+      showUnselectedLabels: false,
+      showSelectedLabels: false,
       items: const [
-        BottomNavigationBarItem(label: 'Home', icon: Icon(Icons.home)),
-        BottomNavigationBarItem(label: 'Account', icon: Icon(Icons.settings)),
+        BottomNavigationBarItem(label: 'Home', icon: Icon(Icons.home, size: 28)),
+        BottomNavigationBarItem(label: 'Account', icon: Icon(Icons.settings, size: 28)),
       ],
     );
   }
