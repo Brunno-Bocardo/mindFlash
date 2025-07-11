@@ -69,13 +69,21 @@ class _TelaPrincipalState extends State<TelaPrincipal> {
           );
         },
       ),
+
+      floatingActionButton: FloatingActionButton(
+        onPressed: () {
+          // chama o popup de criar um deck
+          showCreateDeckDialog(context);
+        },
+        backgroundColor: const Color.fromARGB(255, 126, 49, 115),
+        child: const Icon(Icons.add),
+      ),
+
       bottomNavigationBar: CustomBottomNavigationBar(
         currentIndex: 0,
         onTap: (idx) {
           setState(() {
             if (idx == 1) {
-              showCreateDeckDialog(context);
-            } else if (idx == 2) {
               context.go('/settings');
             }
           });

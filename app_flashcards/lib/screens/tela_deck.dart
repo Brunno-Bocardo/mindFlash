@@ -3,12 +3,12 @@ import 'package:app_flashcards/model/card.dart';
 import 'package:app_flashcards/model/dao_card.dart';
 import 'package:app_flashcards/model/dao_deck.dart';
 import 'package:app_flashcards/model/deck.dart';
-import 'package:app_flashcards/widgets/bottom_navigation.dart';
 import 'package:app_flashcards/widgets/create_card.dart';
 import 'package:app_flashcards/widgets/update_card.dart';
 import 'package:app_flashcards/widgets/update_deck.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:app_flashcards/widgets/bottom_navigation_bar.dart';
 
 class TelaDeck extends StatefulWidget{
   final int? deckId;
@@ -49,18 +49,6 @@ class _TelaDeckState extends State<TelaDeck> {
               const SizedBox(height: 16),
             ],
           )
-        ),
-        bottomNavigationBar: CustomBottomNavigation(
-          currentIndex: 1, 
-          onTap: (idx) {
-            setState(() {
-              if(idx == 0) {
-                context.go('/home');
-              } else if (idx == 2) {
-                context.go('/settings');
-              }
-            });
-          }
         ),
       );
     }
@@ -165,17 +153,16 @@ class _TelaDeckState extends State<TelaDeck> {
         }
       ),
 
-      bottomNavigationBar: CustomBottomNavigation(
-        currentIndex: 1, 
+      bottomNavigationBar: CustomBottomNavigationBar(
+        currentIndex: 0,
         onTap: (idx) {
-          setState(() {
-            if(idx == 0) {
-              context.go('/home');
-            } else if (idx == 2) {
-              context.go('/settings/${widget.deckId}');
-            }
-          });
-        }
+          if (idx == 0) {
+            context.go('/home');
+          }
+          else if (idx == 1) {
+            context.go('/settings');
+          }
+        },
       ),
     );
   }

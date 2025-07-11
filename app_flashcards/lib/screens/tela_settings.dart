@@ -1,6 +1,4 @@
-import 'package:app_flashcards/widgets/bottom_navigation.dart';
-import '../widgets/bottom_navigation_bar.dart';
-import '../widgets/create_deck.dart';
+import 'package:app_flashcards/widgets/bottom_navigation_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -54,25 +52,12 @@ class _SettingsPageState extends State<SettingsPage> {
           ],
         ),
       ),
-      // bottomNavigationBar: CustomBottomNavigation(
-      //   currentIndex: 2,
-      //   onTap: (idx) {
-      //     if (idx == 0) {
-      //       context.go('/home');
-      //     } else if (idx == 1 && widget.deckId != null) {
-      //       context.go('/deck/${widget.deckId}');
-      //     } else if (idx == 1) {
-      //       context.go('/deck/${-1}');
-      //     }
-      //   },
-      // ),
+
       bottomNavigationBar: CustomBottomNavigationBar(
-        currentIndex: 2,
+        currentIndex: 1,
         onTap: (idx) {
           if (idx == 0) {
             context.go('/home');
-          } else if (idx == 1) {
-            showCreateDeckDialog(context);
           }
         },
       ),
