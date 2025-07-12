@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart'; // funções do Firebase
 import 'firebase_options.dart'; // configurações do Firebase - criado no "$ flutterfire configure"
 import 'package:go_router/go_router.dart';
+import 'package:flutter/services.dart'; // necessário para travar a tela na vertical
 
 // TELAS
 import 'screens/tela_login.dart';
@@ -19,6 +20,12 @@ void main() async {
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
+
+  // trava a tela na vertical (up)
+  await SystemChrome.setPreferredOrientations([
+    DeviceOrientation.portraitUp
+  ]);
+
   runApp(const MyApp());
 }
 
