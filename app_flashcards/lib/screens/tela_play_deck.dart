@@ -88,11 +88,12 @@ class _TelaDeckPlayState extends State<TelaDeckPlay> {
       }
     }
 
-    // define o próximo índice e o próximo round
+    // define o próximo índice e o próximo round. Também ordena os cards com base nos acertos
     int nextRounds = _rounds;
     if (nextIndex >= _activeCards.length) {
       nextIndex = 0;
       nextRounds++;
+      _ordenarCards();
     }
 
     // rodou todos os rounds estimados, resetar
@@ -106,20 +107,6 @@ class _TelaDeckPlayState extends State<TelaDeckPlay> {
       _rounds = nextRounds;
       _showAnswer = false;
     });
-
-    // print("Lista de cards ativos (${_activeCards.length}):");
-    // for (var i = 0; i < _activeCards.length; i++) {
-    //   final card = _activeCards[i];
-    //   print("Card $i: Pergunta: '${card.question}', Acertos: ${card.consecutiveHits}");
-    // }
-
-    // _ordenarCards();
-
-    // print("Lista de cards ativos pós (${_activeCards.length}):");
-    // for (var i = 0; i < _activeCards.length; i++) {
-    //   final card = _activeCards[i];
-    //   print("Card $i: Pergunta: '${card.question}', Acertos: ${card.consecutiveHits}");
-    // }
     
   }
 
