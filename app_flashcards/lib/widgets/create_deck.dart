@@ -122,7 +122,6 @@ void createDeck(String name, String desc, BuildContext context) {
       'name': name,
       'description': desc,
       'userEmail': userEmail,
-      'cardsReviewed': 0,
       'totalCards': 0,
     };
 

@@ -4,7 +4,6 @@ class Deck {
   String name;
   String description;
   String userEmail;
-  int cardsReviewed;
   int totalCards;
 
   Deck({
@@ -12,7 +11,6 @@ class Deck {
     required this.name,
     required this.description,
     this.userEmail = '',
-    this.cardsReviewed = 0,
     this.totalCards = 0,
   });
 
@@ -22,7 +20,6 @@ class Deck {
       'name': name,
       'description': description,
       'userEmail': userEmail,
-      'cardsReviewed': cardsReviewed,
       'totalCards': totalCards,
     };
   }
@@ -33,7 +30,6 @@ class Deck {
       name: map['name'],
       description: map['description'],
       userEmail: map['userEmail'] ?? '',
-      cardsReviewed: map['cardsReviewed'],
       totalCards: map['totalCards'],
     );
   }

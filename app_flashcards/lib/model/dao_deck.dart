@@ -51,4 +51,18 @@ class DeckDao {
     );
     return maps.map((map) => Deck.fromMap(map)).toList();
   }
+
+  static Future<int> incrementTotalCards(Database db, int deckId) async {
+    return await db.rawUpdate(
+      'UPDATE $tableName SET totalCards = totalCards + 1 WHERE id = ?',
+      [deckId],
+    );
+  }
+
+  static Future<int> decrementTotalCards(Database db, int deckId) async {
+    return await db.rawUpdate(
+      'UPDATE $tableName SET totalCards = totalCards - 1 WHERE id = ?',
+      [deckId],
+    );
+  }  
 }

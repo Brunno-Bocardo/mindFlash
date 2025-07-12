@@ -89,7 +89,7 @@ void _updateDeck(String name, String desc, Deck? oldDeck, BuildContext context) 
     final userEmail = FirebaseAuth.instance.currentUser?.email ?? '';
 
 
-    final deck = Deck(id: oldDeck.id, name: name, description: desc, userEmail: userEmail, cardsReviewed: oldDeck.cardsReviewed, totalCards: oldDeck.totalCards);
+    final deck = Deck(id: oldDeck.id, name: name, description: desc, userEmail: userEmail, totalCards: oldDeck.totalCards);
 
     DBHelper.getInstance().then((db) {
       DeckDao.updateDeck(db, deck);

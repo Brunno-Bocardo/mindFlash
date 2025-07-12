@@ -1,5 +1,6 @@
 import 'package:app_flashcards/database/db_helper.dart';
 import 'package:app_flashcards/model/dao_card.dart';
+import 'package:app_flashcards/model/dao_deck.dart';
 import 'package:flutter/material.dart';
 
 void showCreateCardDialog(BuildContext context, int? deckId) {
@@ -71,6 +72,11 @@ void createCard(String front, String back, int? deckId, BuildContext context) {
     DBHelper.getInstance().then((db) {
       CardDao.insertCard(db, card);
     });
+    // incrementa o total de cards no deck
+    DBHelper.getInstance().then((db) {
+      DeckDao.incrementTotalCards(db, deckId!);
+    });
+    // fecha e finaliza
     Navigator.of(context).pop();
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(content: Text('Card criado com sucesso!')),

@@ -14,12 +14,10 @@ class TelaDeckPlay extends StatefulWidget {
 }
 
 class _TelaDeckPlayState extends State<TelaDeckPlay> {
-  List<Flashcard> _cards = [];
   List<Flashcard> _activeCards = [];
-  List<Flashcard> masteredCards = [];
   int _currentIndex = 0;
   int _rounds = 0;
-  int roundsUntilReset = 5;
+  int roundsUntilReset = 0;
   bool _showAnswer = false;
 
   @override
@@ -29,47 +27,114 @@ class _TelaDeckPlayState extends State<TelaDeckPlay> {
   }
 
   Future<void> _loadCards() async {
+    // carrega os cards visíveis do BD 
     final db = await DBHelper.getInstance();
-    final cards = await CardDao.getAllCardsByDeckId(db, widget.deckId);
+    final cards = await CardDao.getVisibleCards(db, widget.deckId);
     setState(() {
-      _cards = cards;
       _activeCards = cards;
+      _currentIndex = 0;
+      _rounds = 0;
+      roundsUntilReset = cards.length * 6; // aqui define que para resetar completamente o deck, é necessário passar por 6 vezes o número de cards
     });
   }
 
-  void _nextCard() async {
+  Future<void> _acertouCard() async {
+    // incrementa o acerto consecutivo e chama o próximo card
+    final db = await DBHelper.getInstance();
+    final card = _activeCards[_currentIndex];
+    await CardDao.incrementConsecutiveHits(db, card.id!);
     setState(() {
-      _showAnswer = false;
-      _currentIndex++;
-
-      if(_currentIndex >= _activeCards.length){
-        _rounds++;
-        _currentIndex = 0;
-
-        //Inserir cards dominados após X rodadas
-        if(_rounds >= roundsUntilReset) {
-          _activeCards.addAll(masteredCards);
-          masteredCards.clear();
-          _rounds = 0;
-        }
-
-        //Remover cards dominados
-        _activeCards.removeWhere((card){
-          if(card.consecutiveHits >= 3) {
-            masteredCards.add(card);
-            return true;
-          }
-          return false;
-        });
-        _ordenarCards();
-      }
+      card.consecutiveHits++; 
     });
+    await _nextCard();
+  }
+
+  Future<void> _errouCard() async {
+    // reseta o acerto consecutivo e chama o próximo card
+    final db = await DBHelper.getInstance();
+    final card = _activeCards[_currentIndex];
+    await CardDao.resetConsecutiveHits(db, card.id!);
+    setState(() {
+      card.consecutiveHits = 0;
+    });
+    await _nextCard();
+  }
+
+  Future<void> _nextCard() async {
+    final db = await DBHelper.getInstance();
+
+    // define o próximo indice como sendo o atual
+    int nextIndex = _currentIndex;
+
+    // Verifica o card atual
+    if (_currentIndex < _activeCards.length) {
+      final card = _activeCards[_currentIndex];
+      // se dominado, esconde o card no banco e remove da lista de ativos
+      if (card.consecutiveHits >= 3) {
+        await CardDao.hideCard(db, card.id!);
+        _activeCards.removeAt(_currentIndex);
+        // nesse caso, não incrementa o índice pois removemos um item da lista
+        // o próximo terá o mesmo índice
+
+        // recarrega cards visíveis caso algum card tenha sido dominado
+        final cards = await CardDao.getVisibleCards(db, widget.deckId);
+        setState(() {
+          _activeCards = cards;
+        });
+      }
+      else {
+        // incrementa pois não foi removido nenhum indice de _activeCards
+        nextIndex++;
+      }
+    }
+
+    // define o próximo índice e o próximo round
+    int nextRounds = _rounds;
+    if (nextIndex >= _activeCards.length) {
+      nextIndex = 0;
+      nextRounds++;
+    }
+
+    // rodou todos os rounds estimados, resetar
+    if (nextRounds >= roundsUntilReset) {
+      _resetDeck();
+    }
+
+
+    setState(() {
+      _currentIndex = nextIndex;
+      _rounds = nextRounds;
+      _showAnswer = false;
+    });
+
+    // print("Lista de cards ativos (${_activeCards.length}):");
+    // for (var i = 0; i < _activeCards.length; i++) {
+    //   final card = _activeCards[i];
+    //   print("Card $i: Pergunta: '${card.question}', Acertos: ${card.consecutiveHits}");
+    // }
+
+    // _ordenarCards();
+
+    // print("Lista de cards ativos pós (${_activeCards.length}):");
+    // for (var i = 0; i < _activeCards.length; i++) {
+    //   final card = _activeCards[i];
+    //   print("Card $i: Pergunta: '${card.question}', Acertos: ${card.consecutiveHits}");
+    // }
+    
   }
 
   void _ordenarCards() {
-    // Ordena do menor para o maior número de acertos
-    _activeCards.sort((a,b) => a.consecutiveHits.compareTo(b.consecutiveHits));
+    setState(() {
+      _activeCards.sort((a, b) => a.consecutiveHits.compareTo(b.consecutiveHits));
+      print(_activeCards);
+    });
+  }
 
+  void _resetDeck() async {
+    final db = await DBHelper.getInstance();
+    await CardDao.showAllCardsByDeckId(db, widget.deckId);
+    await CardDao.resetConsecutiveHitsByDeckId(db, widget.deckId);
+    await _loadCards();
   }
 
   @override
@@ -78,9 +143,22 @@ class _TelaDeckPlayState extends State<TelaDeckPlay> {
       return Scaffold(
         appBar: AppBar(backgroundColor: const Color.fromARGB(255, 124, 48, 114)),
         body: Center(
-          child: Text(
-            'Todos os cards foram dominados!',
-            style: TextStyle(fontSize: 18),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Text(
+                'Todos os cards foram dominados!',
+                style: TextStyle(fontSize: 18),
+              ),
+              const SizedBox(height: 24),
+              IconButton(
+                icon: const Icon(Icons.refresh),
+                style: ElevatedButton.styleFrom(
+                  foregroundColor: const Color.fromARGB(255, 126, 49, 115),
+                ),
+                onPressed: ()  { _resetDeck(); },
+              ),
+            ],
           ),
         ),
         floatingActionButton: FloatingActionButton(
@@ -88,6 +166,8 @@ class _TelaDeckPlayState extends State<TelaDeckPlay> {
             final deckId = widget.deckId;
             context.go('/deck/$deckId');
           },
+          backgroundColor: const Color.fromARGB(255, 126, 49, 115),
+          foregroundColor: Colors.white,
           child: const Icon(Icons.arrow_back),
         ),
       );
@@ -100,7 +180,7 @@ class _TelaDeckPlayState extends State<TelaDeckPlay> {
       body: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-            Center(
+          Center(
             child: GestureDetector(
               onTap: () => setState(() => _showAnswer = !_showAnswer),
               child: Card(
@@ -117,7 +197,6 @@ class _TelaDeckPlayState extends State<TelaDeckPlay> {
               ),
             ),
           ),
-
           if(_showAnswer)
             Center(
               child: Card(
@@ -142,31 +221,19 @@ class _TelaDeckPlayState extends State<TelaDeckPlay> {
                 children: [
                   ElevatedButton.icon(
                     icon: const Icon(Icons.check),
-                    onPressed: () {
-                      setState(() {
-                        currentCard.consecutiveHits++;
-                      });
-                      _nextCard();
-                    }, 
+                    onPressed: _acertouCard,
                     label: const Text('Right'),
                   ),
                   ElevatedButton.icon(
                     icon: const Icon(Icons.close),
-                    onPressed: () {
-                      setState(() {
-                        currentCard.consecutiveHits = 0;
-                      });
-                      _nextCard();
-                    }, 
+                    onPressed: _errouCard,
                     label: const Text('Wrong'),
                   )
                 ],
               )
             ),
-          
         ],
       ),
-
       floatingActionButton: FloatingActionButton(
         onPressed: () {
           final deckId = widget.deckId;
@@ -176,7 +243,6 @@ class _TelaDeckPlayState extends State<TelaDeckPlay> {
         foregroundColor: Colors.white,
         child: const Icon(Icons.arrow_back),
       ),
-
     );    
   }
 }

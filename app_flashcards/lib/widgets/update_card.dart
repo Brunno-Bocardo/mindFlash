@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:app_flashcards/model/card.dart';
 import 'package:app_flashcards/model/dao_card.dart';
+import 'package:app_flashcards/model/dao_deck.dart';
 import 'package:app_flashcards/database/db_helper.dart';
 
 void showUpdateCardDialog(BuildContext context, Flashcard card) {
@@ -78,6 +79,7 @@ void _updateCard(String question, String answer, Flashcard oldCard, BuildContext
 void _deleteCard(Flashcard card, BuildContext context) async {
   final db = await DBHelper.getInstance();
   await CardDao.deleteCard(db, card.id!);
+  await DeckDao.decrementTotalCards(db, card.deckId);
   Navigator.of(context).pop();
   ScaffoldMessenger.of(context).showSnackBar(
     const SnackBar(content: Text('Card excluído!')),

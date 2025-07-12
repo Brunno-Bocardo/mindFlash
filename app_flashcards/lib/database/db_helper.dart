@@ -21,7 +21,6 @@ class DBHelper {
         name TEXT NOT NULL,
         description TEXT,
         userEmail TEXT DEFAULT '',
-        cardsReviewed INTEGER DEFAULT 0,
         totalCards INTEGER DEFAULT 0
       )
     ''');
