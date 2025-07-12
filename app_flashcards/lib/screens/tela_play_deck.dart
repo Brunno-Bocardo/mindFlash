@@ -128,7 +128,18 @@ class _TelaDeckPlayState extends State<TelaDeckPlay> {
   Widget build(BuildContext context) {
     if (_activeCards.isEmpty) {
       return Scaffold(
-        appBar: AppBar(backgroundColor: const Color.fromARGB(255, 124, 48, 114)),
+        appBar: AppBar(
+          backgroundColor: const Color.fromARGB(255, 124, 48, 114),
+          leading: IconButton(
+              icon: const Icon(Icons.arrow_back),
+              onPressed: () {
+                final deckId = widget.deckId;
+                context.go('/deck/$deckId');
+              },
+            ),
+          iconTheme: IconThemeData( color: Colors.white ),
+        ),
+
         body: Center(
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
@@ -148,88 +159,96 @@ class _TelaDeckPlayState extends State<TelaDeckPlay> {
             ],
           ),
         ),
-        floatingActionButton: FloatingActionButton(
-          onPressed: () {
-            final deckId = widget.deckId;
-            context.go('/deck/$deckId');
-          },
-          backgroundColor: const Color.fromARGB(255, 126, 49, 115),
-          foregroundColor: Colors.white,
-          child: const Icon(Icons.arrow_back),
-        ),
       );
     }
 
     final currentCard = _activeCards[_currentIndex];
 
     return Scaffold(
-      appBar: AppBar(backgroundColor: const Color.fromARGB(255, 124, 48, 114)),
+      appBar: AppBar(
+        backgroundColor: const Color.fromARGB(255, 124, 48, 114),
+        leading: IconButton(
+            icon: const Icon(Icons.arrow_back),
+            onPressed: () {
+              final deckId = widget.deckId;
+              context.go('/deck/$deckId');
+            },
+          ),
+        iconTheme: IconThemeData( color: Colors.white ),
+      ),
+      
       body: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
           Center(
             child: GestureDetector(
               onTap: () => setState(() => _showAnswer = !_showAnswer),
-              child: Card(
-                elevation: 8,
-                margin: const EdgeInsets.all(24),
-                child: Padding(
-                  padding: const EdgeInsets.all(32),
-                  child: Text(
-                    currentCard.question, 
-                    style: const TextStyle(fontSize: 20),
-                    textAlign: TextAlign.center,
+              child: Container(
+                // isso define tamanhos responsivos paro o card
+                width: MediaQuery.of(context).size.width * 0.85,
+                height: MediaQuery.of(context).size.height * 0.6,
+                margin: EdgeInsets.only(bottom: _showAnswer ? 0 : 73,),
+                child: Card(
+                  color: const Color.fromARGB(255, 185, 77, 171),
+                  elevation: 8,
+                  shape: RoundedRectangleBorder( borderRadius: BorderRadius.circular(15), ),
+                  child: Center(
+                    child: Padding(
+                      padding: const EdgeInsets.all(20),
+                      child: SingleChildScrollView(
+                        child: Text(
+                          _showAnswer ? currentCard.answer : currentCard.question,
+                          style: const TextStyle(
+                            fontSize: 20,
+                            color: Colors.white,
+                          ),
+                          textAlign: TextAlign.center,
+                        ),
+                      ),
+                    ),
                   ),
                 ),
               ),
             ),
           ),
           if(_showAnswer)
-            Center(
-              child: Card(
-                color: Colors.deepPurple[50],
-                elevation: 8,
-                margin: const EdgeInsets.symmetric(horizontal: 24),
-                child: Padding(
-                  padding: const EdgeInsets.all(32),
-                  child: Text(
-                    currentCard.answer,
-                    style: const TextStyle(fontSize: 18),
-                    textAlign: TextAlign.center,
-                  ),
-                ),
-              ),
-            ),
-          if(_showAnswer)
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: [
-                  ElevatedButton.icon(
-                    icon: const Icon(Icons.check),
+                  ElevatedButton(
                     onPressed: _acertouCard,
-                    label: const Text('Right'),
+                    style: ElevatedButton.styleFrom(
+                      padding: const EdgeInsets.symmetric(horizontal: 43, vertical: 10),
+                      backgroundColor: const Color.fromARGB(255, 176, 72, 163),
+                      foregroundColor: Colors.white,
+                      shape: RoundedRectangleBorder( // borda arredondada
+                        borderRadius: BorderRadius.circular(10),
+                      ),
+                    ),
+                    child: const Text('Certo', style: TextStyle(fontSize: 20),
+                    ),
                   ),
-                  ElevatedButton.icon(
-                    icon: const Icon(Icons.close),
+                  ElevatedButton(
                     onPressed: _errouCard,
-                    label: const Text('Wrong'),
-                  )
+                    style: ElevatedButton.styleFrom(
+                      padding: const EdgeInsets.symmetric(horizontal: 46, vertical: 10),
+                      backgroundColor: const Color.fromARGB(255, 176, 72, 163),
+                      foregroundColor: Colors.white,
+                      shape: RoundedRectangleBorder( // borda arredondada
+                        borderRadius: BorderRadius.circular(10),
+                      ),
+                    ),
+                    child: const Text('Errado', style: TextStyle(fontSize: 20),
+                    ),
+                  ),
                 ],
               )
             ),
         ],
       ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: () {
-          final deckId = widget.deckId;
-          context.go('/deck/$deckId');
-        },
-        backgroundColor: const Color.fromARGB(255, 126, 49, 115),
-        foregroundColor: Colors.white,
-        child: const Icon(Icons.arrow_back),
-      ),
+
     );    
   }
 }

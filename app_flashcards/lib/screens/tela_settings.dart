@@ -78,12 +78,12 @@ class _SettingsPageState extends State<SettingsPage> {
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         // email do usuário logado
-                        Text(
-                          'Flávia Goes',
-                          style: TextStyle(
-                            fontSize: 18,
-                          ),
-                        ),
+                        // Text(
+                        //   'Flávia Goes',
+                        //   style: TextStyle(
+                        //     fontSize: 18,
+                        //   ),
+                        // ),
                         Text(
                           FirebaseAuth.instance.currentUser?.email ?? 'Não autenticado',
                           style: TextStyle(
