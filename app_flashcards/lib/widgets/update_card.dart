@@ -11,40 +11,98 @@ void showUpdateCardDialog(BuildContext context, Flashcard card) {
   showDialog(
     context: context,
     builder: (dialogContext) => AlertDialog(
-      title: const Text('Editar Card'),
+      backgroundColor: const Color.fromARGB(255, 255, 254, 255),
+      title: Row(
+        children: [
+          Text(
+            'Editar Card',
+            style: TextStyle(
+              fontSize: 25,
+              color: Color.fromARGB(255, 124, 48, 114),
+            ),
+          ),
+          SizedBox(width: 90),
+          TextButton(
+            onPressed: () => Navigator.of(dialogContext).pop(),
+            child: Icon(Icons.close, size: 40, color: Color.fromARGB(255, 124, 48, 114)),
+          ),
+      ]),
       content: Column(
         mainAxisSize: MainAxisSize.min,
         children: [
           TextField(
             controller: questionController,
-            decoration: const InputDecoration(labelText: 'Pergunta'),
+            maxLength: 200,
+            maxLines: 2,
+            decoration: InputDecoration(
+              labelText: 'Pergunta',
+              enabledBorder: OutlineInputBorder(
+                borderSide: const BorderSide(
+                  color: Color.fromARGB(164, 126, 126, 126), // cor da borda
+                  width: 2,
+                ),
+                borderRadius: BorderRadius.circular(12),
+              ),
+              focusedBorder: OutlineInputBorder(
+                  borderSide: const BorderSide(
+                  color: Color.fromARGB(255, 149, 34, 134),
+                  width: 2.5,
+                ),
+                borderRadius: BorderRadius.circular(12),
+              ),
+            ),
           ),
+          SizedBox(height: 15),
           TextField(
             controller: answerController,
-            decoration: const InputDecoration(labelText: 'Resposta'),
+            maxLength: 400,
+            maxLines: 3,
+            decoration: InputDecoration(
+              labelText: 'Resposta',
+              enabledBorder: OutlineInputBorder(
+                borderSide: const BorderSide(
+                  color: Color.fromARGB(164, 126, 126, 126), // cor da borda
+                  width: 2,
+                ),
+                borderRadius: BorderRadius.circular(12),
+              ),
+              focusedBorder: OutlineInputBorder(
+                  borderSide: const BorderSide(
+                  color: Color.fromARGB(255, 149, 34, 134),
+                  width: 2.5,
+                ),
+                borderRadius: BorderRadius.circular(12),
+              ),
+            ),
           ),
         ],
       ),
       actions: [
-        TextButton(
-          style: TextButton.styleFrom(
-            foregroundColor: const Color.fromARGB(255, 208, 90, 81)
+        ElevatedButton(
+          onPressed: () async {_deleteCard(card, context);}, 
+          style: ElevatedButton.styleFrom(
+            backgroundColor: const Color.fromARGB(255, 208, 90, 81),
+            foregroundColor: Colors.white,
+            shape: RoundedRectangleBorder( // borda arredondada
+              borderRadius: BorderRadius.circular(10),
+            ),
           ),
-          onPressed: () async { _deleteCard(card, context); },
-          child: const Text('Excluir'),
-        ),
-        TextButton(
-          child: const Text('Cancelar'),
-          onPressed: () => Navigator.of(dialogContext).pop(),
+          child: const Text('Excluir', style: TextStyle(fontSize: 20))
         ),
         ElevatedButton(
-          child: const Text('Salvar'),
           onPressed: () async {
             final question = questionController.text.trim();
             final answer = answerController.text.trim();
             _updateCard(question, answer, card, context);
           },
-        ),
+          style: ElevatedButton.styleFrom(
+            backgroundColor: const Color.fromARGB(255, 176, 72, 163),
+            foregroundColor: Colors.white,
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(10),
+            ),
+          ),
+          child: const Text('Salvar', style: TextStyle(fontSize: 20)))
       ],
     ),
   );

@@ -118,38 +118,70 @@ class _TelaDeckState extends State<TelaDeck> {
                   }
                 )
               ),
-
-              Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                  children: [
-                    ElevatedButton.icon(
-                      icon: const Icon(Icons.add),
-                      label: const Text('Adicionar'),
-                      // Abre popup que adiciona o card
-                      onPressed: () => showCreateCardDialog(context, widget.deckId),             
+              SizedBox(height: 20),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  SizedBox(
+                    height: 60,
+                    width: 60,
+                    child: ElevatedButton(
+                      onPressed: () => showCreateCardDialog(context, widget.deckId), 
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: const Color.fromARGB(255, 176, 72, 163),
+                        foregroundColor: Colors.white,
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(100),
+                        ),
+                        padding: EdgeInsets.zero,
+                      ),
+                      child: const Icon(Icons.add, size: 40, color: Colors.white),
                     ),
-                    ElevatedButton.icon(
-                      icon: const Icon(Icons.play_arrow),
-                      label: const Text('Play'),
+                  ),
+                  SizedBox(width: 10),
+                  SizedBox(
+                    height: 80,
+                    width: 80,
+                    child: ElevatedButton(
                       onPressed: () {
                         // Ir para tela de play do deck
                         final deckId = widget.deckId;
                         context.go('/deck/play/$deckId');
-                      }
+                      },
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: const Color.fromARGB(255, 176, 72, 163),
+                        foregroundColor: Colors.white,
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(100),
+                        ),
+                        padding: EdgeInsets.zero,
+                      ),
+                      child: const Icon(Icons.play_arrow, size: 50, color: Colors.white),
                     ),
-                    ElevatedButton.icon(
-                      icon: const Icon(Icons.edit),
-                      label: const Text('Editar'),
+                  ),
+                  SizedBox(width: 10),
+                  SizedBox(
+                    height: 60,
+                    width: 60,
+                    child: ElevatedButton(
                       onPressed: () {
                         // Abrir popup para editar o deck
                         showUpdateDeckDialog(context, deck);
-                      }
+                      },
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: const Color.fromARGB(255, 176, 72, 163),
+                        foregroundColor: Colors.white,
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(100),
+                        ),
+                        padding: EdgeInsets.zero,
+                      ),
+                      child: Icon(Icons.edit, size: 30, color: Colors.white,),
                     ),
-                  ],
-                ),
+                  ),
+                ],
               ),
+              SizedBox(height: 20),
             ],
           );
         }

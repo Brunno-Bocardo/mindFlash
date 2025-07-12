@@ -10,37 +10,88 @@ void showCreateCardDialog(BuildContext context, int? deckId) {
   showDialog(
     context: context, 
     builder: (dialogContext) => AlertDialog(
-      title: const Text('Criar Card'),
+      backgroundColor: const Color.fromARGB(255, 255, 254, 255),
+      title: Row(
+        children: [
+          Text(
+            'Criar Card',
+            style: TextStyle(
+              fontSize: 25,
+              color: Color.fromARGB(255, 124, 48, 114),
+            ),
+          ),
+          SizedBox(width: 90),
+          TextButton(
+            onPressed: () => Navigator.of(dialogContext).pop(),
+            child: Icon(Icons.close, size: 40, color: Color.fromARGB(255, 124, 48, 114)),
+          ),
+      ]),
       content: Column(
         mainAxisSize: MainAxisSize.min,
         children: [
           TextField(
             controller: frontController,
-            decoration: const InputDecoration(
-              labelText: 'Pergunta' 
+            maxLength: 200,
+            maxLines: 2,
+            decoration: InputDecoration(
+              labelText: 'Pergunta',
+              enabledBorder: OutlineInputBorder(
+                borderSide: const BorderSide(
+                  color: Color.fromARGB(164, 126, 126, 126), // cor da borda
+                  width: 2,
+                ),
+                borderRadius: BorderRadius.circular(12),
+              ),
+              focusedBorder: OutlineInputBorder(
+                  borderSide: const BorderSide(
+                  color: Color.fromARGB(255, 149, 34, 134),
+                  width: 2.5,
+                ),
+                borderRadius: BorderRadius.circular(12),
+              ),
             ),
           ),
+          SizedBox(height: 15),
           TextField(
             controller: backController,
-            decoration: const InputDecoration(
+            maxLength: 400,
+            maxLines: 3,
+            decoration: InputDecoration(
               labelText: 'Resposta',
+              enabledBorder: OutlineInputBorder(
+                borderSide: const BorderSide(
+                  color: Color.fromARGB(164, 126, 126, 126), // cor da borda
+                  width: 2,
+                ),
+                borderRadius: BorderRadius.circular(12),
+              ),
+              focusedBorder: OutlineInputBorder(
+                  borderSide: const BorderSide(
+                  color: Color.fromARGB(255, 149, 34, 134),
+                  width: 2.5,
+                ),
+                borderRadius: BorderRadius.circular(12),
+              ),
             ),
           )
         ],
       ),
       actions: [
-        TextButton(
-          onPressed: () => Navigator.of(dialogContext).pop(), 
-          child: const Text('Cancelar'),
-        ),
         ElevatedButton(
           onPressed: () {
             final front = frontController.text.trim();
             final back = backController.text.trim();
             createCard(front, back, deckId, context);
 
-          }, 
-          child: const Text('Criar'))
+          },
+          style: ElevatedButton.styleFrom(
+            backgroundColor: const Color.fromARGB(255, 176, 72, 163),
+            foregroundColor: Colors.white,
+            shape: RoundedRectangleBorder( // borda arredondada
+              borderRadius: BorderRadius.circular(10),
+            ),
+          ),
+          child: const Text('Criar', style: TextStyle(fontSize: 20)))
       ],
     )
   );

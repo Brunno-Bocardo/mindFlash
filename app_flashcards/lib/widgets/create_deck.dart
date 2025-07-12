@@ -22,7 +22,7 @@ void showCreateDeckDialog(BuildContext context) {
               color: Color.fromARGB(255, 124, 48, 114),
             ),
           ),
-          SizedBox(width: 100),
+          SizedBox(width: 90),
           TextButton(
             onPressed: () => Navigator.of(dialogContext).pop(),
             child: Icon(Icons.close, size: 40, color: Color.fromARGB(255, 124, 48, 114)),
@@ -89,7 +89,7 @@ void showCreateDeckDialog(BuildContext context) {
           style: ElevatedButton.styleFrom(
             backgroundColor: const Color.fromARGB(255, 176, 72, 163),
             foregroundColor: Colors.white,
-            shape: RoundedRectangleBorder( // borda arredondada
+            shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(10),
             ),
           ),
@@ -132,8 +132,6 @@ void createDeck(String name, String desc, BuildContext context) {
     ScaffoldMessenger.of(context).showSnackBar(
       const SnackBar(content: Text('Deck criado com sucesso!')),
     );
-    
-
 
   } catch (e) {
     ScaffoldMessenger.of(context).showSnackBar(

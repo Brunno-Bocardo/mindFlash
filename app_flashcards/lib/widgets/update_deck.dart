@@ -17,36 +17,87 @@ void showUpdateDeckDialog(BuildContext context, Deck? deck) {
   showDialog(
     context: context, 
     builder: (dialogContext) => AlertDialog(
-      title: const Text('Editar Deck'),
+      backgroundColor: const Color.fromARGB(255, 255, 254, 255),
+      title: Row(
+        children: [
+          Text(
+            'Editar Deck',
+            style: TextStyle(
+              fontSize: 25,
+              color: Color.fromARGB(255, 124, 48, 114),
+            ),
+          ),
+          SizedBox(width: 90),
+          TextButton(
+            onPressed: () => Navigator.of(dialogContext).pop(),
+            child: Icon(Icons.close, size: 40, color: Color.fromARGB(255, 124, 48, 114)),
+          ),
+      ]),
       content: Column(
         mainAxisSize: MainAxisSize.min,
         children: [
           TextField(
             controller: nameController,
-            decoration: const InputDecoration(labelText: 'Nome do Deck'),
+            maxLength: 50,
+            decoration: InputDecoration(
+              labelText: 'Nome do Deck',
+              enabledBorder: OutlineInputBorder(
+                borderSide: const BorderSide(
+                  color: Color.fromARGB(164, 126, 126, 126), // cor da borda
+                  width: 2,
+                ),
+                borderRadius: BorderRadius.circular(12),
+              ),
+              focusedBorder: OutlineInputBorder(
+                  borderSide: const BorderSide(
+                  color: Color.fromARGB(255, 149, 34, 134),
+                  width: 2.5,
+                ),
+                borderRadius: BorderRadius.circular(12),
+              ),
+            ),
           ),
+          SizedBox(height: 15),
           TextField(
             controller: descController,
-            decoration: const InputDecoration(labelText: 'Descrição'),
+            maxLength: 100,
+            maxLines: 3,
+            decoration: InputDecoration(
+              labelText: 'Descrição',
+              enabledBorder: OutlineInputBorder(
+                borderSide: const BorderSide(
+                  color: Color.fromARGB(164, 126, 126, 126), // cor da borda
+                  width: 2,
+                ),
+                borderRadius: BorderRadius.circular(12),
+              ),
+              focusedBorder: OutlineInputBorder(
+                  borderSide: const BorderSide(
+                  color: Color.fromARGB(255, 149, 34, 134),
+                  width: 2.5,
+                ),
+                borderRadius: BorderRadius.circular(12),
+              ),
+            ),
           ),
         ],
       ),
       actions: [
-        TextButton(
-          style: TextButton.styleFrom(
-            foregroundColor: const Color.fromARGB(255, 208, 90, 81)
-          ),
-          onPressed: () async { 
+        ElevatedButton(
+          onPressed: () async {
             if(deck != null) {
               _deleteDeck(deck, context);
               context.go('/home');
             }
-          },
-          child: const Text('Excluir')
-        ),
-        TextButton(
-          onPressed: () => Navigator.of(dialogContext).pop(), 
-          child: const Text('Cancelar')
+          }, 
+          style: ElevatedButton.styleFrom(
+            backgroundColor: const Color.fromARGB(255, 208, 90, 81),
+            foregroundColor: Colors.white,
+            shape: RoundedRectangleBorder( // borda arredondada
+              borderRadius: BorderRadius.circular(10),
+            ),
+          ),
+          child: const Text('Excluir', style: TextStyle(fontSize: 20))
         ),
         ElevatedButton(
           onPressed: () {
@@ -58,7 +109,14 @@ void showUpdateDeckDialog(BuildContext context, Deck? deck) {
             //Modificar para dar refresh depois
             Navigator.of(dialogContext).pop();
           }, 
-          child: const Text('Salvar')
+          style: ElevatedButton.styleFrom(
+            backgroundColor: const Color.fromARGB(255, 176, 72, 163),
+            foregroundColor: Colors.white,
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(10),
+            ),
+          ),
+          child: const Text('Salvar', style: TextStyle(fontSize: 20))
         ),
       ],
     )

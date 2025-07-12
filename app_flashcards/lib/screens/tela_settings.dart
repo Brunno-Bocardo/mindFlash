@@ -79,7 +79,7 @@ class _SettingsPageState extends State<SettingsPage> {
                       children: [
                         // email do usuário logado
                         Text(
-                          'Flávia Goes',
+                          'Email do usuário:',
                           style: TextStyle(
                             fontSize: 18,
                           ),
