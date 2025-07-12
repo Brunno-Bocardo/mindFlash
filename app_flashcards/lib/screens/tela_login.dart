@@ -63,7 +63,6 @@ class _LoginPageState extends State<LoginPage> {
     );
   }
 
-
   void _tentarLogin() async {
     try {
       // tenta fazer o login com o e-mail e senha fornecidos -> compara diretamente no Firebase
@@ -93,7 +92,5 @@ class _LoginPageState extends State<LoginPage> {
         ),
       );
     }
-  }
-
-  
+  } 
 }

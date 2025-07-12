@@ -1,3 +1,4 @@
+import 'package:app_flashcards/widgets/build_logo_header.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -37,38 +38,51 @@ class _TelaPrincipalState extends State<TelaPrincipal> {
           }
           final decks = snapshot.data ?? [];
 
-          // não existem decks
-          if (decks.isEmpty) {
-            return const Center(child: Text('Nenhum deck cadastrado. Crie um novo!'));
-          }
+          return Column(
+            children: [
+              SizedBox(height: 25),
 
-          // mostra os decks
-          return ListView.builder(
-            itemCount: decks.length,
-            itemBuilder: (context, index) {
-              final deck = decks[index];
-              return Container(
-                margin: const EdgeInsets.all(8.0),
-                padding: const EdgeInsets.all(10.0),
-                decoration: BoxDecoration(
-                  color: const Color.fromARGB(255, 185, 77, 171),
-                  borderRadius: BorderRadius.circular(8.0),
-                  
-                ),
-                child: ListTile(
-                  onTap: () {
-                    context.go('/deck/${deck.id}');
-                  },
-                  title: Text(
-                    deck.name,
-                    style: const TextStyle(color: Colors.white),
+              buildLogoHeader(),
+
+              SizedBox(height: 25),
+
+              // não existem decks
+              if(decks.isEmpty)
+                Center(child: Text('Nenhum deck cadastrado. Crie um novo!')),
+              if(decks.isNotEmpty)
+                Expanded(
+                  child: ListView.builder(
+                    padding: const EdgeInsets.symmetric(horizontal: 12),
+                    itemCount: decks.length,
+                    itemBuilder: (context, index) {
+                      final deck = decks[index];
+                      return Container(
+                        margin: const EdgeInsets.all(8.0),
+                        padding: const EdgeInsets.all(10.0),
+                        decoration: BoxDecoration(
+                          color: const Color.fromARGB(255, 185, 77, 171),
+                          borderRadius: BorderRadius.circular(8.0),
+                          
+                        ),
+                        child: ListTile(
+                          onTap: () {
+                            context.go('/deck/${deck.id}');
+                          },
+                          title: Text(
+                            deck.name,
+                            style: const TextStyle(color: Colors.white),
+                          ),
+                        ),
+                      );
+                    }
                   ),
                 ),
-              );
-            },
+                SizedBox(height: 80),
+            ],
           );
-        },
+        }          
       ),
+
 
       floatingActionButton: FloatingActionButton(
         onPressed: () {

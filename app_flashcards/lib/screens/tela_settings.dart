@@ -20,33 +20,229 @@ class _SettingsPageState extends State<SettingsPage> {
       ),
       body: Center(
         child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
+          mainAxisAlignment: MainAxisAlignment.start,
           children: [
-            const Text('SETTINGS'),
-            const SizedBox(height: 20),
+            const SizedBox(height: 50),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Image.asset(
+                  'img/logo.png',
+                  height: 50,
+                ),
+                Text(
+                  'Settings', 
+                  style: TextStyle(
+                    fontSize: 30,
+                    fontWeight: FontWeight.bold,
+                    color: Color.fromARGB(255, 124, 48, 114)
+                  ),
+                ),
+              ],
+            ),
 
-            // email do usuário logado
-            Text('Email: ${FirebaseAuth.instance.currentUser?.email ?? 'Não autenticado'}'),
+            const SizedBox(height: 50),
 
+            Container(
+              width: 370,
+              height: 115,
+              padding: const EdgeInsets.all(15),
+              decoration: BoxDecoration(
+                border: Border.all(
+                  width: 2,
+                  color: Color.fromARGB(255, 176, 72, 163)
+                ),
+                borderRadius: BorderRadius.circular(12),
+              ),
+              child: Row(
+                  children: [
+                    SizedBox(
+                      width: 65,
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: const [
+                          Icon(Icons.account_circle, size: 35),
+                          Text(
+                            'Account',
+                            style: TextStyle(
+                              fontSize: 16,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                    const SizedBox(width: 24),
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        // email do usuário logado
+                        Text(
+                          'Flávia Goes',
+                          style: TextStyle(
+                            fontSize: 18,
+                          ),
+                        ),
+                        Text(
+                          FirebaseAuth.instance.currentUser?.email ?? 'Não autenticado',
+                          style: TextStyle(
+                            fontSize: 18,
+                          ),
+                        ),
+                      ],
+                    )
+                  ],
+                )
+            ),
             const SizedBox(height: 20),
+            Container(
+              width: 370,
+              height: 115,
+              padding: const EdgeInsets.all(15),
+              decoration: BoxDecoration(
+                border: Border.all(
+                  width: 2,
+                  color: Color.fromARGB(255, 176, 72, 163)
+                ),
+                borderRadius: BorderRadius.circular(12),
+              ),
+              child: Row(
+                children: [
+                  SizedBox(
+                    width: 65,
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: const [
+                        Icon(Icons.info, size: 35),
+                        Text(
+                          'About',
+                          style: TextStyle(
+                            fontSize: 16,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                  const SizedBox(width: 24),
+                  Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      // email do usuário logado
+                      Text(
+                        'MindFlash',
+                        style: TextStyle(
+                          fontSize: 18,
+                        ),
+                      ),
+                      Text(
+                        'Flashcard App',
+                        style: TextStyle(
+                          fontSize: 18,
+                        ),
+                      ),
+                      Text(
+                        'Version 1.0',
+                        style: TextStyle(
+                          fontSize: 18,
+                        ),
+                      ),
+                    ],
+                  )
+                ],
+              )
+            ),
+
+            const SizedBox(height: 100),
             
             ElevatedButton(
               onPressed: _showResetPasswordDialog,
-              child: const Text('Mudar senha'),
+              style: ElevatedButton.styleFrom(
+                backgroundColor: const Color.fromARGB(255, 176, 72, 163),
+                foregroundColor: Colors.white,
+                shape: RoundedRectangleBorder( // borda arredondada
+                  borderRadius: BorderRadius.circular(10),
+                ),
+              ),
+              child: SizedBox(
+                width: 200,
+                height: 50,
+                child: Row(
+                  children: [
+                    Icon(Icons.password, size: 30),
+                    SizedBox(width: 20),
+                    const Text(
+                      'Mudar senha',
+                      style: TextStyle(
+                          fontSize: 20,
+                          fontWeight: FontWeight.bold
+                      ),
+                    ),
+                  ],
+                ),
+              )
             ),
             
-            const SizedBox(height: 20),
+            const SizedBox(height: 10),
 
             ElevatedButton(
               onPressed: _showLogoutDialog,
-              child: const Text('Log Out'),
+              style: ElevatedButton.styleFrom(
+                backgroundColor: const Color.fromARGB(255, 176, 72, 163),
+                foregroundColor: Colors.white,
+                shape: RoundedRectangleBorder( // borda arredondada
+                  borderRadius: BorderRadius.circular(10),
+                ),
+              ),
+              child: SizedBox(
+                width: 200,
+                height: 50,
+                child: Row(
+                  children: [
+                    Icon(Icons.logout, size: 30),
+                    SizedBox(width: 20),
+                    const Text(
+                      'Log Out',
+                      style: TextStyle(
+                          fontSize: 20,
+                          fontWeight: FontWeight.bold
+                      ),
+                    ),
+                  ],
+                ),
+              )
             ),
 
-            const SizedBox(height: 20),
+            const SizedBox(height: 50),
 
             ElevatedButton(
               onPressed: _showDeleteAccountDialog,
-              child: const Text('Delete Account'),
+              style: ElevatedButton.styleFrom(
+                backgroundColor: const Color.fromARGB(255, 176, 72, 163),
+                foregroundColor: Colors.white,
+                shape: RoundedRectangleBorder( // borda arredondada
+                  borderRadius: BorderRadius.circular(10),
+                ),
+              ),
+              child: SizedBox(
+                width: 200,
+                height: 50,
+                child: Row(
+                  children: [
+                    Icon(Icons.delete_forever_sharp, size: 30),
+                    SizedBox(width: 20),
+                    const Text(
+                      'Delete Account',
+                      style: TextStyle(
+                          fontSize: 20,
+                          fontWeight: FontWeight.bold
+                      ),
+                    ),
+                  ],
+                ),
+              )
             ),
           ],
         ),
@@ -75,13 +271,13 @@ class _SettingsPageState extends State<SettingsPage> {
             child: const Text('Cancelar'),
           ),
           TextButton(
+            child: const Text('Confirmar'),
             onPressed: () async {
               Navigator.of(dialogContext).pop();
               await FirebaseAuth.instance.signOut();
               if (!mounted) return;
               context.go('/');
             },
-            child: const Text('Confirmar'),
           ),
         ],
       ),
