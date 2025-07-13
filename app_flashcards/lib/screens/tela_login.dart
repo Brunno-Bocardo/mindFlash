@@ -14,6 +14,7 @@ class _LoginPageState extends State<LoginPage> {
   final TextEditingController _senhaController = TextEditingController();
   final FirebaseAuth _auth =
       FirebaseAuth.instance; // Instância do FirebaseAuth - para usar os métodos
+  bool _obscureText = true;
 
   @override
   Widget build(BuildContext context) {
@@ -72,6 +73,16 @@ class _LoginPageState extends State<LoginPage> {
                     controller: _senhaController,
                     decoration: InputDecoration(
                       labelText: 'Senha',
+                      suffixIcon: IconButton(
+                        icon: Icon(
+                          _obscureText ? Icons.visibility_off : Icons.visibility,
+                        ),
+                        onPressed: () {
+                          setState(() {
+                            _obscureText = !_obscureText;
+                          });
+                        },
+                      ),
                       enabledBorder: OutlineInputBorder(
                         borderSide: const BorderSide(
                           color: Color.fromARGB(164, 126, 126, 126), // cor da borda
@@ -87,7 +98,7 @@ class _LoginPageState extends State<LoginPage> {
                         borderRadius: BorderRadius.circular(12),
                       ),
                     ),
-                    obscureText: true,
+                    obscureText: _obscureText,
                   ),
                 ),
                 Padding(

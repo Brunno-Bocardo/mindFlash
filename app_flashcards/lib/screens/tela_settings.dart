@@ -11,6 +11,8 @@ class SettingsPage extends StatefulWidget {
 }
 
 class _SettingsPageState extends State<SettingsPage> {
+  bool _obscureText = true;
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -416,6 +418,16 @@ class _SettingsPageState extends State<SettingsPage> {
               controller: passwordController,
               decoration: InputDecoration(
               labelText: 'Password',
+              suffixIcon: IconButton(
+                icon: Icon(
+                  _obscureText ? Icons.visibility_off : Icons.visibility,
+                ),
+                onPressed: () {
+                  setState(() {
+                    _obscureText = !_obscureText;
+                  });
+                },
+              ),
               enabledBorder: OutlineInputBorder(
                 borderSide: const BorderSide(
                   color: Color.fromARGB(164, 126, 126, 126), // cor da borda
@@ -431,7 +443,7 @@ class _SettingsPageState extends State<SettingsPage> {
                 borderRadius: BorderRadius.circular(12),
               ),
             ),
-              obscureText: true,
+              obscureText: _obscureText,
             ),
           ],
         ),
