@@ -13,15 +13,15 @@ void showUpdateCardDialog(BuildContext context, Flashcard card) {
     builder: (dialogContext) => AlertDialog(
       backgroundColor: const Color.fromARGB(255, 255, 254, 255),
       title: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
           Text(
             'Editar Card',
             style: TextStyle(
-              fontSize: 25,
+              fontSize: 22,
               color: Color.fromARGB(255, 124, 48, 114),
             ),
           ),
-          SizedBox(width: 90),
           TextButton(
             onPressed: () => Navigator.of(dialogContext).pop(),
             child: Icon(Icons.close, size: 40, color: Color.fromARGB(255, 124, 48, 114)),
@@ -33,7 +33,6 @@ void showUpdateCardDialog(BuildContext context, Flashcard card) {
           TextField(
             controller: questionController,
             maxLength: 200,
-            maxLines: 2,
             decoration: InputDecoration(
               labelText: 'Pergunta',
               enabledBorder: OutlineInputBorder(
@@ -52,11 +51,10 @@ void showUpdateCardDialog(BuildContext context, Flashcard card) {
               ),
             ),
           ),
-          SizedBox(height: 15),
           TextField(
             controller: answerController,
             maxLength: 400,
-            maxLines: 3,
+            maxLines: 2,
             decoration: InputDecoration(
               labelText: 'Resposta',
               enabledBorder: OutlineInputBorder(

@@ -22,7 +22,7 @@ class _SettingsPageState extends State<SettingsPage> {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.start,
           children: [
-            const SizedBox(height: 50),
+            const SizedBox(height: 25),
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
@@ -41,11 +41,11 @@ class _SettingsPageState extends State<SettingsPage> {
               ],
             ),
 
-            const SizedBox(height: 50),
+            const SizedBox(height: 25),
 
             Container(
-              width: 370,
-              height: 115,
+              width: MediaQuery.of(context).size.width * 0.80,
+              height: MediaQuery.of(context).size.height * 0.15,
               padding: const EdgeInsets.all(15),
               decoration: BoxDecoration(
                 border: Border.all(
@@ -73,32 +73,36 @@ class _SettingsPageState extends State<SettingsPage> {
                       ),
                     ),
                     const SizedBox(width: 24),
-                    Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        // email do usuário logado
-                        Text(
-                          'Email do usuário:',
-                          style: TextStyle(
-                            fontSize: 18,
+                    Flexible(
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          // email do usuário logado
+                          Text(
+                            'Email do usuário:',
+                            style: TextStyle(
+                              fontSize: 15,
+                            ),
                           ),
-                        ),
-                        Text(
-                          FirebaseAuth.instance.currentUser?.email ?? 'Não autenticado',
-                          style: TextStyle(
-                            fontSize: 18,
+                          Text(
+                            FirebaseAuth.instance.currentUser?.email ?? 'Não autenticado',
+                            softWrap: true,
+                            overflow: TextOverflow.visible,
+                            style: TextStyle(
+                              fontSize: 15, 
+                            ),
                           ),
-                        ),
-                      ],
-                    )
+                        ],
+                      )
+                    ),
                   ],
                 )
             ),
-            const SizedBox(height: 20),
+            const SizedBox(height: 10),
             Container(
-              width: 370,
-              height: 115,
+              width: MediaQuery.of(context).size.width * 0.80,
+              height: MediaQuery.of(context).size.height * 0.15,
               padding: const EdgeInsets.all(15),
               decoration: BoxDecoration(
                 border: Border.all(
@@ -134,19 +138,19 @@ class _SettingsPageState extends State<SettingsPage> {
                       Text(
                         'MindFlash',
                         style: TextStyle(
-                          fontSize: 18,
+                          fontSize: 15,
                         ),
                       ),
                       Text(
                         'Flashcard App',
                         style: TextStyle(
-                          fontSize: 18,
+                          fontSize: 15,
                         ),
                       ),
                       Text(
                         'Version 1.0',
                         style: TextStyle(
-                          fontSize: 18,
+                          fontSize: 15,
                         ),
                       ),
                     ],
@@ -155,7 +159,7 @@ class _SettingsPageState extends State<SettingsPage> {
               )
             ),
 
-            const SizedBox(height: 100),
+            const SizedBox(height: 25),
             
             ElevatedButton(
               onPressed: _showResetPasswordDialog,

@@ -12,15 +12,15 @@ void showCreateCardDialog(BuildContext context, int? deckId) {
     builder: (dialogContext) => AlertDialog(
       backgroundColor: const Color.fromARGB(255, 255, 254, 255),
       title: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
           Text(
             'Criar Card',
             style: TextStyle(
-              fontSize: 25,
+              fontSize: 22,
               color: Color.fromARGB(255, 124, 48, 114),
             ),
           ),
-          SizedBox(width: 90),
           TextButton(
             onPressed: () => Navigator.of(dialogContext).pop(),
             child: Icon(Icons.close, size: 40, color: Color.fromARGB(255, 124, 48, 114)),
@@ -32,7 +32,7 @@ void showCreateCardDialog(BuildContext context, int? deckId) {
           TextField(
             controller: frontController,
             maxLength: 200,
-            maxLines: 2,
+            maxLines: 1,
             decoration: InputDecoration(
               labelText: 'Pergunta',
               enabledBorder: OutlineInputBorder(
@@ -51,11 +51,10 @@ void showCreateCardDialog(BuildContext context, int? deckId) {
               ),
             ),
           ),
-          SizedBox(height: 15),
           TextField(
             controller: backController,
             maxLength: 400,
-            maxLines: 3,
+            maxLines: 2,
             decoration: InputDecoration(
               labelText: 'Resposta',
               enabledBorder: OutlineInputBorder(

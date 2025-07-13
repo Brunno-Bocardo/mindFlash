@@ -19,15 +19,15 @@ void showUpdateDeckDialog(BuildContext context, Deck? deck) {
     builder: (dialogContext) => AlertDialog(
       backgroundColor: const Color.fromARGB(255, 255, 254, 255),
       title: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
           Text(
             'Editar Deck',
             style: TextStyle(
-              fontSize: 25,
+              fontSize: 22,
               color: Color.fromARGB(255, 124, 48, 114),
             ),
           ),
-          SizedBox(width: 90),
           TextButton(
             onPressed: () => Navigator.of(dialogContext).pop(),
             child: Icon(Icons.close, size: 40, color: Color.fromARGB(255, 124, 48, 114)),
@@ -57,11 +57,10 @@ void showUpdateDeckDialog(BuildContext context, Deck? deck) {
               ),
             ),
           ),
-          SizedBox(height: 15),
           TextField(
             controller: descController,
             maxLength: 100,
-            maxLines: 3,
+            maxLines: 2,
             decoration: InputDecoration(
               labelText: 'Descrição',
               enabledBorder: OutlineInputBorder(

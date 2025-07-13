@@ -35,6 +35,7 @@ class _TelaCadastroState extends State<TelaCadastro> {
                 ),
                 const Text(
                   'Please fill the fields below to create an account',
+                  textAlign: TextAlign.center,
                   style: TextStyle(
                     fontSize: 15,
                     color: Color.fromARGB(255, 118, 118, 118),
