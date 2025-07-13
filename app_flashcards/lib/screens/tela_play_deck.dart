@@ -19,6 +19,7 @@ class _TelaDeckPlayState extends State<TelaDeckPlay> {
   int _rounds = 0;
   int roundsUntilReset = 0;
   bool _showAnswer = false;
+  bool _deckVazio = false;
 
   @override
   void initState() {
@@ -30,6 +31,12 @@ class _TelaDeckPlayState extends State<TelaDeckPlay> {
     // carrega os cards visíveis do BD 
     final db = await DBHelper.getInstance();
     final cards = await CardDao.getVisibleCards(db, widget.deckId);
+    if (cards.isEmpty) {
+      setState(() {
+        _deckVazio = true;
+      });
+      return;
+    }
     setState(() {
       _activeCards = cards;
       _currentIndex = 0;
@@ -123,6 +130,39 @@ class _TelaDeckPlayState extends State<TelaDeckPlay> {
 
   @override
   Widget build(BuildContext context) {
+    if(_deckVazio) {
+      return Scaffold(
+        appBar: AppBar(
+          backgroundColor: const Color.fromARGB(255, 124, 48, 114),
+          leading: IconButton(
+              icon: const Icon(Icons.arrow_back),
+              onPressed: () {
+                final deckId = widget.deckId;
+                context.go('/deck/$deckId');
+              },
+            ),
+          iconTheme: IconThemeData( color: Colors.white ),
+        ),
+
+        body: Center(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Text(
+                'Ei! Parece que não há cards neste deck.',
+                style: TextStyle(fontSize: 12),
+              ),
+              const SizedBox(height: 24),
+              Text(
+                'Que tal voltar e criar alguns?',
+                style: TextStyle(fontSize: 12),
+              ),
+            ],
+          ),
+        ),
+      );
+    }
+
     if (_activeCards.isEmpty) {
       return Scaffold(
         appBar: AppBar(
