@@ -5,11 +5,11 @@ import 'package:app_flashcards/database/db_helper.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
 
-void showCreateDeckDialog(BuildContext context) {
+Future<bool> showCreateDeckDialog(BuildContext context) async {
   final nameController = TextEditingController();
   final descController = TextEditingController();
 
-  showDialog(
+  final result = await showDialog(
     context: context,
     builder: (dialogContext) => AlertDialog(
       backgroundColor: const Color.fromARGB(255, 255, 254, 255),
@@ -78,12 +78,14 @@ void showCreateDeckDialog(BuildContext context) {
       ),
       actions: [
         ElevatedButton(
-          onPressed: () {
+          onPressed: () async {
             final name = nameController.text.trim();
             final desc = descController.text.trim();
-            createDeck(name, desc, context);
-            // refresh the deck list
-            context.go('/home');
+            final created = await createDeck(name, desc, context);
+            if (created) {
+              Navigator.of(dialogContext).pop(true);
+            }
+            
           },
           style: ElevatedButton.styleFrom(
             backgroundColor: const Color.fromARGB(255, 176, 72, 163),
@@ -98,21 +100,22 @@ void showCreateDeckDialog(BuildContext context) {
       ],
     ),
   );
+  return result ?? false;
 }
 
-void createDeck(String name, String desc, BuildContext context) {
+Future<bool> createDeck(String name, String desc, BuildContext context) async {
   try {
 
     if (name.isEmpty) {
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(content: Text('O nome do deck não pode estar vazio.')),
       );
-      return;
+      return false;
     } else if (desc.isEmpty) {
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(content: Text('A descrição não pode estar vazia.')),
       );
-      return;
+      return false;
     }
 
     final userEmail = FirebaseAuth.instance.currentUser?.email ?? '';
@@ -127,14 +130,15 @@ void createDeck(String name, String desc, BuildContext context) {
     DBHelper.getInstance().then((db) {
       DeckDao.insertDeck(db, deck);
     });
-    Navigator.of(context).pop();
     ScaffoldMessenger.of(context).showSnackBar(
       const SnackBar(content: Text('Deck criado com sucesso!')),
     );
+    return true;
 
   } catch (e) {
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(content: Text('Erro: $e')),
     );
+    return false;
   }
 }

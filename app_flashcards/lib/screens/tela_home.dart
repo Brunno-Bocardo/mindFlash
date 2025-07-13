@@ -85,9 +85,13 @@ class _TelaPrincipalState extends State<TelaPrincipal> {
 
 
       floatingActionButton: FloatingActionButton(
-        onPressed: () {
+        onPressed: () async {
           // chama o popup de criar um deck
-          showCreateDeckDialog(context);
+          final deckCreated = await showCreateDeckDialog(context);
+          if (deckCreated) {
+            // espera e garante que o deck foi criado antes de "recarregar" a tela
+            setState(() {});
+          }
         },
         backgroundColor: const Color.fromARGB(255, 126, 49, 115),
         foregroundColor: Colors.white,

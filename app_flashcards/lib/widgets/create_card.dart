@@ -130,8 +130,6 @@ Future<bool> createCard(String front, String back, int? deckId, BuildContext con
     DBHelper.getInstance().then((db) {
       DeckDao.incrementTotalCards(db, deckId!);
     });
-    // fecha e finaliza
-    Navigator.of(context).pop();
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(content: Text('Card criado com sucesso!')),
     );
