@@ -112,7 +112,7 @@ class _TelaCadastroState extends State<TelaCadastro> {
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      const Text("Don you have an account?", style: TextStyle(color: Color.fromARGB(255, 118, 118, 118), fontSize: 15)),
+                      const Text("Do you have an account?", style: TextStyle(color: Color.fromARGB(255, 118, 118, 118), fontSize: 15)),
                       SizedBox(width: 5),
                       const Text("Log In", style: TextStyle(color:Color.fromARGB(255, 163, 67, 150), fontSize: 15)),
                     ],
@@ -141,15 +141,29 @@ class _TelaCadastroState extends State<TelaCadastro> {
       showDialog(
         context: context,
         builder: (_) => AlertDialog(
-          title: const Text('Sucesso'),
+          backgroundColor: const Color.fromARGB(255, 255, 254, 255),
+          title: const Text('Sucesso', 
+          style: TextStyle(
+            fontSize: 18,
+            color: Color.fromARGB(255, 124, 48, 114),
+          )),
           content: const Text('Usuário cadastrado com sucesso!'),
           actions: [
-            TextButton(
-              child: const Text('OK'),
+            ElevatedButton(
               onPressed: () {
                 Navigator.of(context).pop();
                 context.go('/');
               },
+              style: ElevatedButton.styleFrom(
+                backgroundColor: const Color.fromARGB(255, 176, 72, 163),
+                foregroundColor: Colors.white,
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(10),
+                ),
+                padding: EdgeInsets.all(8.0),
+              ),
+              child: const Text('OK', style: TextStyle(fontSize: 15),
+              ),
             ),
           ],
         ),
@@ -161,16 +175,33 @@ class _TelaCadastroState extends State<TelaCadastro> {
       showDialog(
         context: context,
         builder: (_) => AlertDialog(
-          title: const Text('Erro'),
-            content: Text(
+          backgroundColor: const Color.fromARGB(255, 255, 254, 255),
+          title: const Text('Erro', 
+          style: TextStyle(
+            fontSize: 18,
+            color: Color.fromARGB(255, 124, 48, 114),
+          )),
+          content: Text(
             e is FirebaseAuthException && e.code == 'invalid-email'
-              ? 'E-mail inválido. Por favor, verifique o formato do e-mail.'
-              : 'Erro ao cadastrar usuário. Preencha os campos corretamente e tente novamente.',
-            ),
+            ? 'E-mail inválido. Por favor, verifique o formato do e-mail.'
+            : 'Erro ao cadastrar usuário. Preencha os campos corretamente e tente novamente.',
+          ),
           actions: [
-            TextButton(
-              onPressed: () => Navigator.pop(context),
-              child: const Text('OK'),
+            ElevatedButton(
+              onPressed: () {
+                Navigator.of(context).pop();
+                context.go('/');
+              },
+              style: ElevatedButton.styleFrom(
+                backgroundColor: const Color.fromARGB(255, 176, 72, 163),
+                foregroundColor: Colors.white,
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(10),
+                ),
+                padding: EdgeInsets.all(8.0),
+              ),
+              child: const Text('OK', style: TextStyle(fontSize: 15),
+              ),
             ),
           ],
         ),
