@@ -106,7 +106,13 @@ class _TelaDeckState extends State<TelaDeck> {
                           ),
                           child: ListTile(
                             // abrir popup pra editar ou excluir o card
-                            onTap: () => showUpdateCardDialog(context, card),
+                            onTap: () async {
+                              final cardUpdated = await showUpdateCardDialog(context, card);
+                              if (cardUpdated) {
+                                // espera e garante que a carta foi atualizada antes de "recarregar" a tela
+                                setState(() { });
+                              }
+                            },
                             title: Text(
                               card.question,
                               style: const TextStyle(color: Colors.white),
@@ -126,7 +132,13 @@ class _TelaDeckState extends State<TelaDeck> {
                     height: 60,
                     width: 60,
                     child: ElevatedButton(
-                      onPressed: () => showCreateCardDialog(context, widget.deckId), 
+                      onPressed: () async {
+                        final cardCreated = await showCreateCardDialog(context, widget.deckId);
+                        if (cardCreated) {
+                          // espera e garante que a carta foi criada antes de "recarregar" a tela
+                          setState(() { });
+                        }
+                      },
                       style: ElevatedButton.styleFrom(
                         backgroundColor: const Color.fromARGB(255, 176, 72, 163),
                         foregroundColor: Colors.white,
@@ -164,9 +176,13 @@ class _TelaDeckState extends State<TelaDeck> {
                     height: 60,
                     width: 60,
                     child: ElevatedButton(
-                      onPressed: () {
+                      onPressed: () async {
                         // Abrir popup para editar o deck
-                        showUpdateDeckDialog(context, deck);
+                        final deckUpdated = await showUpdateDeckDialog(context, deck);
+                        if (deckUpdated) {
+                          // espera e garante que o deck foi atualizado antes de "recarregar" a tela
+                          setState(() { });
+                        }
                       },
                       style: ElevatedButton.styleFrom(
                         backgroundColor: const Color.fromARGB(255, 176, 72, 163),

@@ -3,11 +3,12 @@ import 'package:app_flashcards/model/dao_card.dart';
 import 'package:app_flashcards/model/dao_deck.dart';
 import 'package:flutter/material.dart';
 
-void showCreateCardDialog(BuildContext context, int? deckId) {
+Future<bool> showCreateCardDialog(BuildContext context, int? deckId) async {
   final frontController = TextEditingController();
   final backController = TextEditingController();
-
-  showDialog(
+  
+  // result é retornado para validar na tela que chamou o Dialog
+  final result = await showDialog<bool>(
     context: context, 
     builder: (dialogContext) => AlertDialog(
       backgroundColor: const Color.fromARGB(255, 255, 254, 255),
@@ -77,11 +78,13 @@ void showCreateCardDialog(BuildContext context, int? deckId) {
       ),
       actions: [
         ElevatedButton(
-          onPressed: () {
+          onPressed: () async {
             final front = frontController.text.trim();
             final back = backController.text.trim();
-            createCard(front, back, deckId, context);
-
+            final success = await createCard(front, back, deckId, dialogContext);
+            if (success) {
+              Navigator.of(dialogContext).pop(true);
+            }
           },
           style: ElevatedButton.styleFrom(
             backgroundColor: const Color.fromARGB(255, 176, 72, 163),
@@ -94,29 +97,30 @@ void showCreateCardDialog(BuildContext context, int? deckId) {
       ],
     )
   );
+  
+  return result ?? false;
 }
 
-void createCard(String front, String back, int? deckId, BuildContext context) {
+Future<bool> createCard(String front, String back, int? deckId, BuildContext context) async {
   try {
-
     if(front.isEmpty) {
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(content: Text('A frente do card não pode estar vazia.')),
       );
-      return;
+      return false;
     } else if (back.isEmpty) {
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(content: Text('O campo resposta não pode estar vazio.')),
       );
-      return;
+      return false;
     }
 
-    final card =  {
+    final card = {
       'deckId': deckId,
       'question': front,
       'answer': back,
       'consecutiveHits': 0,
-      'hidden': false
+      'hidden': 0
     };
 
     DBHelper.getInstance().then((db) {
@@ -131,9 +135,12 @@ void createCard(String front, String back, int? deckId, BuildContext context) {
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(content: Text('Card criado com sucesso!')),
     );
-  } catch (e) {
+    return true;
+  } 
+  catch (e) {
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(content: Text('Erro: $e')),
     );
+    return false;
   }
 }

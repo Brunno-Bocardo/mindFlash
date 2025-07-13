@@ -5,7 +5,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
-void showUpdateDeckDialog(BuildContext context, Deck? deck) {
+Future<bool> showUpdateDeckDialog(BuildContext context, Deck? deck) async {
   final nameController = TextEditingController();
   final descController = TextEditingController();
 
@@ -14,7 +14,7 @@ void showUpdateDeckDialog(BuildContext context, Deck? deck) {
     descController.text = deck.description;
   }
 
-  showDialog(
+  final result = await showDialog<bool>(
     context: context, 
     builder: (dialogContext) => AlertDialog(
       backgroundColor: const Color.fromARGB(255, 255, 254, 255),
@@ -85,7 +85,10 @@ void showUpdateDeckDialog(BuildContext context, Deck? deck) {
         ElevatedButton(
           onPressed: () async {
             if(deck != null) {
-              _deleteDeck(deck, context);
+              final deleted = await _deleteDeck(deck, context);
+              if(deleted) {
+                Navigator.of(dialogContext).pop(true);
+              }
               context.go('/home');
             }
           }, 
@@ -99,14 +102,15 @@ void showUpdateDeckDialog(BuildContext context, Deck? deck) {
           child: const Text('Excluir', style: TextStyle(fontSize: 20))
         ),
         ElevatedButton(
-          onPressed: () {
+          onPressed: () async {
             final name = nameController.text.trim();
             final desc = descController.text.trim();
             if(deck != null){
-              _updateDeck(name, desc, deck, context);
+              final updated = await _updateDeck(name, desc, deck, context);
+              if(updated) {
+                Navigator.of(dialogContext).pop(true);
+              }
             }
-            //Modificar para dar refresh depois
-            Navigator.of(dialogContext).pop();
           }, 
           style: ElevatedButton.styleFrom(
             backgroundColor: const Color.fromARGB(255, 176, 72, 163),
@@ -120,9 +124,10 @@ void showUpdateDeckDialog(BuildContext context, Deck? deck) {
       ],
     )
   );
+  return result ?? false;
 }
 
-void _updateDeck(String name, String desc, Deck? oldDeck, BuildContext context) {
+Future<bool> _updateDeck(String name, String desc, Deck? oldDeck, BuildContext context) async {
 
   try {
 
@@ -130,17 +135,17 @@ void _updateDeck(String name, String desc, Deck? oldDeck, BuildContext context) 
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(content: Text('O nome do deck não pode estar vazio.')),
       );
-      return;
+      return false;
     } else if(desc.isEmpty) {
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(content: Text('A descrição não pode estar vazia.')),
       );
-      return;
+      return false;
     } else if (oldDeck == null) {
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(content: Text('O deck não pode ser nulo.')),
       );
-      return;
+      return false;
     }
 
     final userEmail = FirebaseAuth.instance.currentUser?.email ?? '';
@@ -151,18 +156,21 @@ void _updateDeck(String name, String desc, Deck? oldDeck, BuildContext context) 
     DBHelper.getInstance().then((db) {
       DeckDao.updateDeck(db, deck);
     });
+    return true;
 
   } catch (e) {
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(content: Text('Erro: $e')),
     );
+    return false;
   }
 }
 
-void _deleteDeck(Deck deck, BuildContext context) async {
+Future<bool> _deleteDeck(Deck deck, BuildContext context) async {
   final db = await DBHelper.getInstance();
   await DeckDao.deleteDeck(db, deck.id!);
   ScaffoldMessenger.of(context).showSnackBar(
     const SnackBar(content: Text('Deck excluído!')),
   );
+  return true;
 }

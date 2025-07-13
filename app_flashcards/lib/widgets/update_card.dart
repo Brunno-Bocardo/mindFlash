@@ -4,11 +4,11 @@ import 'package:app_flashcards/model/dao_card.dart';
 import 'package:app_flashcards/model/dao_deck.dart';
 import 'package:app_flashcards/database/db_helper.dart';
 
-void showUpdateCardDialog(BuildContext context, Flashcard card) {
+Future<bool> showUpdateCardDialog(BuildContext context, Flashcard card) async {
   final questionController = TextEditingController(text: card.question);
   final answerController = TextEditingController(text: card.answer);
 
-  showDialog(
+  final result = await showDialog<bool>(
     context: context,
     builder: (dialogContext) => AlertDialog(
       backgroundColor: const Color.fromARGB(255, 255, 254, 255),
@@ -77,7 +77,12 @@ void showUpdateCardDialog(BuildContext context, Flashcard card) {
       ),
       actions: [
         ElevatedButton(
-          onPressed: () async {_deleteCard(card, context);}, 
+          onPressed: () async {
+            final deleted = await _deleteCard(card, context);
+            if (deleted) {
+              Navigator.of(dialogContext).pop(true);
+            }
+          }, 
           style: ElevatedButton.styleFrom(
             backgroundColor: const Color.fromARGB(255, 208, 90, 81),
             foregroundColor: Colors.white,
@@ -91,7 +96,10 @@ void showUpdateCardDialog(BuildContext context, Flashcard card) {
           onPressed: () async {
             final question = questionController.text.trim();
             final answer = answerController.text.trim();
-            _updateCard(question, answer, card, context);
+            final updated = await _updateCard(question, answer, card, context);
+            if (updated) {
+              Navigator.of(dialogContext).pop(true);
+            }
           },
           style: ElevatedButton.styleFrom(
             backgroundColor: const Color.fromARGB(255, 176, 72, 163),
@@ -104,40 +112,42 @@ void showUpdateCardDialog(BuildContext context, Flashcard card) {
       ],
     ),
   );
+  return result ?? false;
 }
 
-void _updateCard(String question, String answer, Flashcard oldCard, BuildContext context) {
+Future<bool> _updateCard(String question, String answer, Flashcard oldCard, BuildContext context) async {
   try {
     if (question.isEmpty || answer.isEmpty) {
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(content: Text('Preencha todos os campos.')),
       );
-      return;
+      return false;
     }
     final updatedCard = Flashcard(id: oldCard.id, deckId: oldCard.deckId, question: question, answer: answer, consecutiveHits: oldCard.consecutiveHits, hidden: oldCard.hidden, );
 
-    DBHelper.getInstance().then((db) {
-      CardDao.updateCard(db, updatedCard);
-    });
-    Navigator.of(context).pop();
+
+    final db = await DBHelper.getInstance();
+    await CardDao.updateCard(db, updatedCard);
+
     ScaffoldMessenger.of(context).showSnackBar(
       const SnackBar(content: Text('Card atualizado!')),
     );
+    return true;
   } 
-  
   catch (e) {
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(content: Text('Erro ao atualizar card: $e')),
     );
+    return false;
   }
 }
 
-void _deleteCard(Flashcard card, BuildContext context) async {
+Future<bool> _deleteCard(Flashcard card, BuildContext context) async {
   final db = await DBHelper.getInstance();
   await CardDao.deleteCard(db, card.id!);
   await DeckDao.decrementTotalCards(db, card.deckId);
-  Navigator.of(context).pop();
   ScaffoldMessenger.of(context).showSnackBar(
     const SnackBar(content: Text('Card excluído!')),
   );
+  return true;
 }
