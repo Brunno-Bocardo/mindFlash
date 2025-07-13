@@ -65,7 +65,7 @@ class _SettingsPageState extends State<SettingsPage> {
                           Text(
                             'Account',
                             style: TextStyle(
-                              fontSize: 16,
+                              fontSize: 13,
                               fontWeight: FontWeight.bold,
                             ),
                           ),
@@ -122,7 +122,7 @@ class _SettingsPageState extends State<SettingsPage> {
                         Text(
                           'About',
                           style: TextStyle(
-                            fontSize: 16,
+                            fontSize: 13,
                             fontWeight: FontWeight.bold,
                           ),
                         ),
@@ -180,7 +180,7 @@ class _SettingsPageState extends State<SettingsPage> {
                     const Text(
                       'Mudar senha',
                       style: TextStyle(
-                          fontSize: 20,
+                          fontSize: 15,
                           fontWeight: FontWeight.bold
                       ),
                     ),
@@ -210,7 +210,7 @@ class _SettingsPageState extends State<SettingsPage> {
                     const Text(
                       'Log Out',
                       style: TextStyle(
-                          fontSize: 20,
+                          fontSize: 15,
                           fontWeight: FontWeight.bold
                       ),
                     ),
@@ -240,7 +240,7 @@ class _SettingsPageState extends State<SettingsPage> {
                     const Text(
                       'Delete Account',
                       style: TextStyle(
-                          fontSize: 20,
+                          fontSize: 15,
                           fontWeight: FontWeight.bold
                       ),
                     ),
