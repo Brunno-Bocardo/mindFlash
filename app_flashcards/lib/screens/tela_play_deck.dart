@@ -101,19 +101,16 @@ class _TelaDeckPlayState extends State<TelaDeckPlay> {
       _resetDeck();
     }
 
-
     setState(() {
       _currentIndex = nextIndex;
       _rounds = nextRounds;
       _showAnswer = false;
     });
-    
   }
 
   void _ordenarCards() {
     setState(() {
       _activeCards.sort((a, b) => a.consecutiveHits.compareTo(b.consecutiveHits));
-      print(_activeCards);
     });
   }
 
@@ -184,7 +181,7 @@ class _TelaDeckPlayState extends State<TelaDeckPlay> {
             child: GestureDetector(
               onTap: () => setState(() => _showAnswer = !_showAnswer),
               child: Container(
-                // isso define tamanhos responsivos paro o card
+                // isso define tamanhos responsivos para o card
                 width: MediaQuery.of(context).size.width * 0.85,
                 height: MediaQuery.of(context).size.height * 0.6,
                 margin: EdgeInsets.only(bottom: _showAnswer ? 0 : 73,),
@@ -248,7 +245,6 @@ class _TelaDeckPlayState extends State<TelaDeckPlay> {
             ),
         ],
       ),
-
     );    
   }
 }

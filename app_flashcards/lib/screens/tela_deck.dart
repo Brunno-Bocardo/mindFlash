@@ -140,8 +140,8 @@ class _TelaDeckState extends State<TelaDeck> {
                   ),
                   SizedBox(width: 10),
                   SizedBox(
-                    height: 80,
-                    width: 80,
+                    height: 75,
+                    width: 75,
                     child: ElevatedButton(
                       onPressed: () {
                         // Ir para tela de play do deck

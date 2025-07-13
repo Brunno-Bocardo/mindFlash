@@ -84,12 +84,6 @@ class _SettingsPageState extends State<SettingsPage> {
                             fontSize: 18,
                           ),
                         ),
-                        // Text(
-                        //   'Flávia Goes',
-                        //   style: TextStyle(
-                        //     fontSize: 18,
-                        //   ),
-                        // ),
                         Text(
                           FirebaseAuth.instance.currentUser?.email ?? 'Não autenticado',
                           style: TextStyle(
